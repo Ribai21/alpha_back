@@ -14,7 +14,7 @@ const { log } = require("console");
 
 const app = express();
 app.use(express.json());
-const port = process.env.PORT 
+const port = process.env.PORT || 5000 
 app.use("/uploads", express.static("uploads"));
 
 const corsOptions = {
@@ -29,22 +29,19 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT || 3306,
+  connectionLimit: 10,
+  acquireTimeout: 60000,
+  timeout: 60000,
+  reconnect: true
 });
 
-// Connect to MySQL
-db.connect((err) => {
-  if (err) {
-    console.error("Database connection failed:", err);
-    return;
-  }
-  console.log("Connected to MySQL database");
-});
+console.log("MySQL connection pool created");
 
 // MARK:LOGIN AND SIGNUP
 
