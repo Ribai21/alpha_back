@@ -14,7 +14,7 @@ const { log } = require("console");
 
 const app = express();
 app.use(express.json());
-const port = 5000;
+const port = process.env.PORT 
 app.use("/uploads", express.static("uploads"));
 
 app.use(
@@ -25,10 +25,11 @@ app.use(
 );
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root", // Change this to your MySQL username
-  password: "ribai123", // Change this to your MySQL password
-  database: "alpha", // Change this to your MySQL database name
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
 });
 
 // Connect to MySQL
