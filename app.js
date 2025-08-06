@@ -17,12 +17,17 @@ app.use(express.json());
 const port = process.env.PORT 
 app.use("/uploads", express.static("uploads"));
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-  })
-);
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',
+    'https://alphaarena.netlify.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
